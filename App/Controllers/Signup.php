@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use \Core\View;
+use \App\Models\User;
 
 class Signup extends \Core\Controller{
 
@@ -10,8 +11,15 @@ class Signup extends \Core\Controller{
         View::renderTemplate('Signup/new.html');
     }
 
+    //jak zapisać dane z formularza do bazy danych
     public function createAction(){
-        var_dump($_POST);
+        //tworzę nowego usera i przekauję mu wszystkie dane
+        //skoro przekazuję dane podczas tworzenia obiektu
+        //to są one odbierane przez __construct($data) w User
+        $user = new User($_POST);
+        $user->save();
+        View::renderTemplate('Signup/success.html');
+
     }
 
 }
