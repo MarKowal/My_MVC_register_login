@@ -50,6 +50,10 @@ class User extends \Core\Model{
             $this->errors[] = 'Invalid email.';
         }
 
+        if ($this->emailExists($this->email)){
+            $this->errors[] = 'Email already exists in the data base.';
+        }
+
         if ($this->password != $this->password_confirm){
             $this->errors[] = 'Password must match confirmation.';
         }
@@ -65,7 +69,19 @@ class User extends \Core\Model{
         if (preg_match('/.*\d+.*/i', $this->password) == 0){
             $this->errors[] = 'Password needs at least one number.';
         }
+    }
 
+    protected function emailExists($email){
+
+        $sql = 'SELECT * FROM users WHERE email = :email';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+
+        $stmt->execute();
+
+        return $stmt->fetch() !== false;
     }
     
 }
