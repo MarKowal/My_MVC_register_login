@@ -17,9 +17,11 @@ class Signup extends \Core\Controller{
         //skoro przekazuję dane podczas tworzenia obiektu
         //to są one odbierane przez __construct($data) w User
         $user = new User($_POST);
-        $user->save();
-        View::renderTemplate('Signup/success.html');
-
+        if ($user->save()){
+            View::renderTemplate('Signup/success.html');
+        } else {
+            var_dump($user->errors);
+        }
     }
 
 }
