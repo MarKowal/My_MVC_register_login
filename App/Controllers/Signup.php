@@ -20,7 +20,10 @@ class Signup extends \Core\Controller{
         if ($user->save()){
             View::renderTemplate('Signup/success.html');
         } else {
-            var_dump($user->errors);
+            //przesyłam spowrotem obiekt $user żeby wyświetlać error messages
+            View::renderTemplate('Signup/new.html', [
+                'user' => $user
+            ]);
         }
     }
 
