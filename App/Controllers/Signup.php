@@ -18,13 +18,22 @@ class Signup extends \Core\Controller{
         //to są one odbierane przez __construct($data) w User
         $user = new User($_POST);
         if ($user->save()){
-            View::renderTemplate('Signup/success.html');
+            //View::renderTemplate('Signup/success.html');
+
+            //przeniesienie na stronę sukces, żeby drugi raz nie przesyłać danych z formularza
+            header('Location: http://'.$_SERVER['HTTP_HOST'].'/signup/success', true, 303);
+            exit;
+
         } else {
             //przesyłam spowrotem obiekt $user żeby wyświetlać error messages
             View::renderTemplate('Signup/new.html', [
                 'user' => $user
             ]);
         }
+    }
+
+    public function successAction(){
+        View::renderTemplate('Signup/success.html');
     }
 
 }
