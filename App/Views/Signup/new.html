@@ -3,7 +3,29 @@
 {% block title %}Sign up{% endblock %}
 
 {% block footer %}
-    <script></script>
+    <script>
+        $(document).ready(function(){
+            $('#formSignup').validate({
+                //validation rules from https://jqueryvalidation.org/documentation/
+                rules: {
+                    name: 'required',
+                    email: {
+                        required: true,
+                        email: true
+                    },
+                    password: {
+                        required: true,
+                        minlength: 6
+                    },
+                    password_confirm: {
+                        equalTo: '#inputPassword'
+                    }
+                }
+
+
+            });
+        });
+    </script>
 {% endblock %}
 
 
@@ -22,7 +44,7 @@
     </ul>
     {% endif %}
 
-    <form action="/signup/create" method="post">
+    <form action="/signup/create" method="post" id="formSignup">
 
         <div>
             <label for="inputName">Name</label>
