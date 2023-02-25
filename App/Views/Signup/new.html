@@ -28,7 +28,9 @@
                     name: 'required',
                     email: {
                         required: true,
-                        email: true
+                        email: true,
+                        //walidacja z użyciem AJAX z Account.php:
+                        remote: '/account/validate-email'
                     },
                     password: {
                         required: true,
@@ -39,7 +41,13 @@
                     password_confirm: {
                         equalTo: '#inputPassword'
                     }
-                }
+                },
+                //my custom message for email validation in AJAX:
+                messages: {
+                        email: {
+                            remote: 'email already taken'
+                        }
+                    }
 
 
             });

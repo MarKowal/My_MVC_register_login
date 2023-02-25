@@ -50,7 +50,7 @@ class User extends \Core\Model{
             $this->errors[] = 'Invalid email.';
         }
 
-        if ($this->emailExists($this->email)){
+        if (static::emailExists($this->email)){
             $this->errors[] = 'Email already exists in the data base.';
         }
 
@@ -71,8 +71,9 @@ class User extends \Core\Model{
         }
     }
 
-    protected function emailExists($email){
-
+    //dla walidacji w Account w AJAX trzeba było ustawić public static:
+    //protected function emailExists($email){
+    public static function emailExists($email){
         $sql = 'SELECT * FROM users WHERE email = :email';
 
         $db = static::getDB();
