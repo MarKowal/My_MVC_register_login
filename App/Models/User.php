@@ -54,9 +54,9 @@ class User extends \Core\Model{
             $this->errors[] = 'Email already exists in the data base.';
         }
 
-        if ($this->password != $this->password_confirm){
+        /*if ($this->password != $this->password_confirm){
             $this->errors[] = 'Password must match confirmation.';
-        }
+        }*/
 
         if (strlen($this->password) < 6){
             $this->errors[] = 'Password must have at least 6 characters.';
