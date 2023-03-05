@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use \Core\View;
+use \App\Models\User;
 
 class Login extends \Core\Controller{
 
@@ -12,7 +13,9 @@ class Login extends \Core\Controller{
     }
 
     public function createAction(){
-        var_dump($_POST);
+
+        $user = User::findByEmail($_POST['email']);
+        var_dump($user);
     }
 }
 
