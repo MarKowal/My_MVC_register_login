@@ -23,7 +23,10 @@ class Login extends \Core\Controller{
             header('Location: http://'.$_SERVER['HTTP_HOST'].'/', true, 303);
             exit;
         } else{
-            View::renderTemplate('Login/new.html');
+            View::renderTemplate('Login/new.html', [
+                //podaję wpisany email do ponownego wyświeltenia w html w value="{{ email }}"
+                'email' => $_POST['email'],
+            ]);
         }
     }
 }
