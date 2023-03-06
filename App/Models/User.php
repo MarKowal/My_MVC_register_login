@@ -105,6 +105,20 @@ class User extends \Core\Model{
 
         return $stmt->fetch();
     }
+
+    public static function authenticate($email, $password){
+
+        //czy user z takim emailem istnieje?
+        $user = static::findByEmail($email);
+        //jeżeli tak to
+        //czy user z takim hasłem istnieje?
+        if($user){
+            if (password_verify($password, $user->password_hash)){
+                return $user;
+            }
+        }
+        return false;
+    }
 }
 
 
