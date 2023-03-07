@@ -23,6 +23,8 @@ class View{
         if($twig === null){
             $loader = new \Twig\Loader\FilesystemLoader('../App/Views');
             $twig = new \Twig\Environment($loader);
+            //add Session to Twig:
+            $twig->addGlobal('session', $_SESSION);
         }
 
         echo $twig->render($template, $args);
