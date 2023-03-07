@@ -20,8 +20,7 @@ class Login extends \Core\Controller{
         $user = User::authenticate($_POST['email'], $_POST['password']);
 
         if($user){
-            header('Location: http://'.$_SERVER['HTTP_HOST'].'/', true, 303);
-            exit;
+            $this->redirect('/');
         } else{
             View::renderTemplate('Login/new.html', [
                 //podaję wpisany email do ponownego wyświeltenia w html w value="{{ email }}"
@@ -29,6 +28,8 @@ class Login extends \Core\Controller{
             ]);
         }
     }
+
+
 }
 
 ?>
