@@ -16,6 +16,7 @@ $router->add('', ['controller' => 'Home', 'action'=>'index']);
 $router->add('{controller}/{action}');
 $router->add('{controller}/{id:\d+}/{action}');
 $router->add('login', ['controller' => 'login', 'action'=>'new']);
+$router->add('logout', ['controller' => 'login', 'action'=>'destroy']);
 
 $router->dispatch($_SERVER['QUERY_STRING']);
 

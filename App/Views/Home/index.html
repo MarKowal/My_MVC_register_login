@@ -9,6 +9,9 @@
 
     {% if session.user_id %}
         User with ID: {{ session.user_id }} is logged in.
+        <br>
+        <a href="/login/destroy">Log out</a>
+
     {% else %}
         <a href="/signup/new">Signup</a> or <a href="/login">Login</a><br>
     {% endif %}
