@@ -21,6 +21,9 @@ class Login extends \Core\Controller{
 
         if($user){
 
+            //generowanie nowego Session ID w razie gdyby hacker miał wcześniejsze
+            session_regenerate_id(true);
+
             //sesja przyjmuje ID usera
             $_SESSION['user_id'] = $user->id;
             $this->redirect('/');
