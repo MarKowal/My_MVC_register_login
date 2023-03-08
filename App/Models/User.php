@@ -8,7 +8,7 @@ class User extends \Core\Model{
 
     public $errors = []; 
 
-    public function __construct($data){
+    public function __construct($data = []){
         // $data to wartości z tablicy $_POST
         // wartości tablicy trzeba zamienić na atrybuty obiektu $user
          foreach($data as $key => $value){
@@ -74,7 +74,7 @@ class User extends \Core\Model{
     //dla walidacji w Account w AJAX trzeba było ustawić public static:
     //protected function emailExists($email){
     public static function emailExists($email){
-        $sql = 'SELECT * FROM users WHERE email = :email';
+        /*$sql = 'SELECT * FROM users WHERE email = :email';
 
         $db = static::getDB();
         $stmt = $db->prepare($sql);
@@ -82,9 +82,43 @@ class User extends \Core\Model{
 
         $stmt->execute();
 
-        return $stmt->fetch() !== false;
+        return $stmt->fetch() !== false;*/
+
+        return static::findByEmail($email) !== false;
     }
     
+    public static function findByEmail($email){
+        $sql = 'SELECT * FROM users WHERE email = :email';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+        
+        //standardowo fetch zwraca tablicę
+        //teraz chcę żeby zwróciło obiekt:
+        //$stmt->setFetchMode(PDO::FETCH_CLASS, 'App\Models\User');
+
+        //zamiast hard-coded App\Models\User używam funkcji:
+        $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+
+        $stmt->execute();
+
+        return $stmt->fetch();
+    }
+
+    public static function authenticate($email, $password){
+
+        //czy user z takim emailem istnieje?
+        $user = static::findByEmail($email);
+        //jeżeli tak to
+        //czy user z takim hasłem istnieje?
+        if($user){
+            if (password_verify($password, $user->password_hash)){
+                return $user;
+            }
+        }
+        return false;
+    }
 }
 
 

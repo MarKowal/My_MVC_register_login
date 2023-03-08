@@ -14,3 +14,5 @@ class Config{
     //true - show all error details on the screen, nothing is saved in logs/txt file
 
 }
+
+?>
