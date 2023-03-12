@@ -25,10 +25,11 @@ class Auth{
         }
         session_destroy();
     }
-
+    /*
     public static function isLoggedIn(){
         return isset($_SESSION['user_id']);
     }
+    */
 
     public static function rememberRequestedPage(){
         $_SESSION['return_to'] = $_SERVER['REQUEST_URI'];

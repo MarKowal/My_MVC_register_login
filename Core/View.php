@@ -26,7 +26,7 @@ class View{
             //add Session to Twig:
             //$twig->addGlobal('session', $_SESSION);
             //dodawanie funkcji isLoggedIn() do Twiga:
-            $twig->addGlobal('is_logged_in', \App\Auth::isLoggedIn());
+            //$twig->addGlobal('is_logged_in', \App\Auth::isLoggedIn());
             //jeśli chcę żeby coś było dostępne pomiędzy view-templatkami 
             //to wrzucam do Twiga globalnie:
             $twig->addGlobal('current_user', \App\Auth::getUser());
