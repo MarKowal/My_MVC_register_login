@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use \Core\View;
 use \App\Models\User;
+use \App\Auth;
 
 class Login extends \Core\Controller{
 
@@ -22,10 +23,12 @@ class Login extends \Core\Controller{
         if($user){
 
             //generowanie nowego Session ID w razie gdyby hacker miał wcześniejsze
-            session_regenerate_id(true);
+            //session_regenerate_id(true);
 
             //sesja przyjmuje ID usera
-            $_SESSION['user_id'] = $user->id;
+            //$_SESSION['user_id'] = $user->id;
+            
+            Auth::login($user);
             $this->redirect('/');
 
         } else{
@@ -37,6 +40,7 @@ class Login extends \Core\Controller{
     }
 
     public function destroyAction(){
+        /*
         //https://www.php.net/manual/en/function.session-destroy.php
         // Unset all of the session variables.
         $_SESSION = array();
@@ -55,6 +59,9 @@ class Login extends \Core\Controller{
 
         // Finally, destroy the session.
         session_destroy();
+        */
+       
+        Auth::logout();
         $this->redirect('/');
     }
 
