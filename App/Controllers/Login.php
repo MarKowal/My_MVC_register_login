@@ -29,7 +29,8 @@ class Login extends \Core\Controller{
             //$_SESSION['user_id'] = $user->id;
             
             Auth::login($user);
-            $this->redirect('/');
+            //$this->redirect('/');
+            $this->redirect(Auth::getReturnPage());
 
         } else{
             View::renderTemplate('Login/new.html', [

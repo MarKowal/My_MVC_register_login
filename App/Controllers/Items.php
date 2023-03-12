@@ -10,6 +10,9 @@ class Items extends \Core\Controller{
     public function indexAction(){
         //page is restricted for logged-in users only:
         if(Auth::isLoggedIn() == false){
+            //zapamiętuje wklepany URL, żeby wrócić do niego po zalogowaniu:
+            Auth::rememberRequestedPage();
+            
             $this->redirect('/login');
         }
         View::renderTemplate('Items/index.html');

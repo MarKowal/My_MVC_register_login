@@ -27,6 +27,15 @@ class Auth{
         return isset($_SESSION['user_id']);
     }
 
+    public static function rememberRequestedPage(){
+        $_SESSION['return_to'] = $_SERVER['REQUEST_URI'];
+    }
+
+    public static function getReturnPage(){
+        //zwraca zapamiętany URL lub home-page jeżeli takiego URL nie ma:
+        return $_SESSION['return_to'] ?? '/';
+    }
+
 }
 
 
