@@ -24,7 +24,14 @@ class View{
             $loader = new \Twig\Loader\FilesystemLoader('../App/Views');
             $twig = new \Twig\Environment($loader);
             //add Session to Twig:
-            $twig->addGlobal('session', $_SESSION);
+            //$twig->addGlobal('session', $_SESSION);
+            //dodawanie funkcji isLoggedIn() do Twiga:
+            //$twig->addGlobal('is_logged_in', \App\Auth::isLoggedIn());
+            //jeśli chcę żeby coś było dostępne pomiędzy view-templatkami 
+            //to wrzucam do Twiga globalnie:
+            $twig->addGlobal('current_user', \App\Auth::getUser());
+
+
         }
 
         echo $twig->render($template, $args);

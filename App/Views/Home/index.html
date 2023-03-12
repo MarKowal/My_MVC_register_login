@@ -5,13 +5,15 @@
 {% block body %}
     
     <h1>Welcome</h1>
-    <p>Hello from a Twig template {{ name }} {{title }}!</p>
+    <!--<p>Hello from a Twig template {{ name }} {{title }}!</p>-->
 
-    {% if session.user_id %}
-        User with ID: {{ session.user_id }} is logged in.
-        <br>
-        <a href="/login/destroy">Log out</a>
+    {% if current_user %}
+        <!-- User with ID: {{ session.user_id }} is logged in.
+        <a href="/login/destroy">Log out</a>-->
+        
+        <p>Hello {{ current_user.name }}!</p><br>
 
+        <a href="/logout">Log out</a>
     {% else %}
         <a href="/signup/new">Signup</a> or <a href="/login">Login</a><br>
     {% endif %}
