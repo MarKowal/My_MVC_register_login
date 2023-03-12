@@ -7,6 +7,13 @@ use \App\Auth;
 
 class Items extends \Core\Controller{
 
+    protected function before(){
+        //ACTION FILTER
+        //restricted EVERY ACTION in this class:
+        $this->requireLogin();
+    }
+
+
     public function indexAction(){
         /*
         //page is restricted for logged-in users only:
@@ -17,7 +24,9 @@ class Items extends \Core\Controller{
             $this->redirect('/login');
         }
         */
-        $this->requireLogin();
+
+        //restricted ONLY for this ONE action:
+        //$this->requireLogin();
         View::renderTemplate('Items/index.html');
     }
 }
