@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use \Core\View;
+use \App\Auth;
 
 class Home extends \Core\Controller{
 
@@ -15,10 +16,14 @@ class Home extends \Core\Controller{
     }
     
     public function indexAction(){
-
+        /*
+        tak nie muszę przekazywać Usera do view, 
+        bo jest zrobiona w Twigu globalna zmienna current_user
         View::renderTemplate('Home/index.html', [
-            'name' => 'Karol',
-            'title' => 'the Third']);
+            'user' => Auth::getUser()
+        ]);
+        */
+        View::renderTemplate('Home/index.html');
     }
 }
 
