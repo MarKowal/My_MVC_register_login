@@ -70,6 +70,16 @@ class Login extends \Core\Controller{
         */
        
         Auth::logout();
+
+        //tak nie wyświetli flash message bo najpierw zrobił session-destroy w logout
+        //Flash::addMessages('Logout successful.');
+
+        $this->redirect('/login/showLogoutMessage');
+    }
+
+    public function showLogoutMessageAction(){
+        //dzięki wydzieleniu do nowej metody startuje nowa sesja
+        Flash::addMessages('Logout successful.');
         $this->redirect('/');
     }
 
