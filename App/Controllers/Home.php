@@ -4,6 +4,8 @@ namespace App\Controllers;
 
 use \Core\View;
 use \App\Auth;
+use \App\Token;
+
 
 class Home extends \Core\Controller{
 
@@ -23,7 +25,15 @@ class Home extends \Core\Controller{
             'user' => Auth::getUser()
         ]);
         */
+
         View::renderTemplate('Home/index.html');
+
+        $token = new Token();
+        echo '<br>token = '.$token->getValue();
+        echo '<br>token hash = '.$token->getHash();
+        $token2 = new Token('123abc');
+        echo '<br>token2 = '.$token2->getValue();
+        echo '<br>token2 hash = '.$token2->getHash();
     }
 }
 
