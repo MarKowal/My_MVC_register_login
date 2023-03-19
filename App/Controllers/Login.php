@@ -38,7 +38,7 @@ class Login extends \Core\Controller{
 
         } else{
 
-            Flash::addMessages('Login unsuccessful, please try again.');
+            Flash::addMessages('Login unsuccessful, please try again.', Flash::WARNING);
 
             View::renderTemplate('Login/new.html', [
                 //podaję wpisany email do ponownego wyświeltenia w html w value="{{ email }}"

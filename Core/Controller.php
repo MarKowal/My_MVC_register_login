@@ -35,7 +35,7 @@ abstract class Controller{
 
     public function requireLogin(){
         if(Auth::getUser() == false){
-            Flash::addMessages('Please login to access that page.');
+            Flash::addMessages('Please login to access that page.', Flash::INFO);
             Auth::rememberRequestedPage();
             $this->redirect('/login');
         }
