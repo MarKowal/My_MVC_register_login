@@ -20,6 +20,8 @@ class Login extends \Core\Controller{
         //var_dump($user);
 
         $user = User::authenticate($_POST['email'], $_POST['password']);
+        
+        $remember_me = isset($_POST['remember_me']);
 
         if($user){
 
@@ -43,6 +45,7 @@ class Login extends \Core\Controller{
             View::renderTemplate('Login/new.html', [
                 //podaję wpisany email do ponownego wyświeltenia w html w value="{{ email }}"
                 'email' => $_POST['email'],
+                'remember_me' => $remember_me
             ]);
         }
     }
