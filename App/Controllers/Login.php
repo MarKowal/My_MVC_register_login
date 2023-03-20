@@ -31,7 +31,7 @@ class Login extends \Core\Controller{
             //sesja przyjmuje ID usera
             //$_SESSION['user_id'] = $user->id;
             
-            Auth::login($user);
+            Auth::login($user, $remember_me);
             //$this->redirect('/');
 
             Flash::addMessages('Login successful.');
