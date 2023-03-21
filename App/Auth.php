@@ -7,11 +7,23 @@ use \App\Models\User;
 class Auth{
 
     public static function login($user, $remember_me){
+        //nadaję nowe ID sesji
         session_regenerate_id(true);
+        //ID zalogowanego usera robię globalnym bo się przyda
         $_SESSION['user_id'] = $user->id;
 
+        //jeżeli przeglądarka ma zapamiętać usera
         if($remember_me){
-            $user->rememberLogin();
+            //generuje nowy token i zapisuje w DB
+            if($user->rememberLogin()){
+                //ustawiam ciasteczko
+                setcookie(
+                    'remember_me', 
+                    $user->remember_token, 
+                    $user->expiry_timestamp,
+                    '/'
+                );
+            }
         }
 
     }
