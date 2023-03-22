@@ -78,14 +78,10 @@ class Auth{
         $cookie = $_COOKIE['remember_me'] ?? false;
 
         if($cookie){
-
-            echo 'cookie = ';
-            var_dump($cookie);
-
             //sprawdzam czy jest taki token wśród zapamiętanych
             $remembered_login = RememberedLogin::findByToken($cookie);
 
-            if($remembered_login){
+            if($remembered_login && ! $remembered_login->hasExpired()){
                 //do zalogowania niezbędny jest obiekt user
                 //ktorego ID znalazłem dzięki DB remembered_login
                 $user = $remembered_login->getUser();

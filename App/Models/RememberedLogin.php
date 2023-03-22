@@ -31,4 +31,9 @@ class RememberedLogin extends \Core\Model{
         return User::findByID($this->user_id);
     }
 
+    public function hasExpired(){
+        //sprawdzam czy cookie wygasło
+        return strtotime($this->expires_at) < time();
+    }
+
 }
