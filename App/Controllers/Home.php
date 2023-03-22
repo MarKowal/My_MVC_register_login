@@ -28,12 +28,6 @@ class Home extends \Core\Controller{
 
         View::renderTemplate('Home/index.html');
 
-        $token = new Token();
-        echo '<br>token = '.$token->getValue();
-        echo '<br>token hash = '.$token->getHash();
-        $token2 = new Token('123abc');
-        echo '<br>token2 = '.$token2->getValue();
-        echo '<br>token2 hash = '.$token2->getHash();
     }
 }
 

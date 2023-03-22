@@ -136,13 +136,15 @@ class User extends \Core\Model{
     }
 
     public function rememberLogin(){
+        //tworzę nowy token ktory będzie w cookie
         $token = new Token();
+        //hashuję token przed zapisaniem w DB
         $hashed_token = $token->getHash();
+
+        //zapisuję w zmiennej czysty token, pójdzie do cookie
         $this->remember_token = $token->getValue();
-
-
-        //czas wygaśnięcia cookie np. 30 dni
-        $this->expiry_timestamp = time() + 60 * 60 * 24 * 30;
+        //ustawiam czas wygaśnięcia cookie np. 2 dni
+        $this->expiry_timestamp = time() + 60 * 60 * 24 * 2;
 
         $sql = 'INSERT INTO remembered_logins (token_hash, user_id, expires_at) 
                 VALUES (:token_hash, :user_id, :expires_at)';

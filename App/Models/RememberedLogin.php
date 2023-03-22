@@ -8,9 +8,9 @@ use PDO;
 class RememberedLogin extends \Core\Model{
 
     public static function findByToken($token){
+        //dostaję czysty token z cookie i hashuję go
         $token = new Token($token);
         $token_hash = $token->getHash();
-
 
         $sql = 'SELECT * FROM remembered_logins WHERE token_hash = :token_hash';
 
@@ -27,6 +27,7 @@ class RememberedLogin extends \Core\Model{
     }
 
     public function getUser(){
+        //user_id w tej klasie mam dzieki fetchowaniu z DB remembered_logins
         return User::findByID($this->user_id);
     }
 

@@ -15,14 +15,20 @@ class Auth{
 
         //jeżeli przeglądarka ma zapamiętać usera
         if($remember_me){
-            //generuje nowy token i zapisuje w DB
+            //jeżeli wygenerowałem nowy token 
+            //i zapisałem go w DB remembered_logins
+            //to ustawiam ciasteczko:
             if($user->rememberLogin()){
                 //ustawiam ciasteczko
                 setcookie(
+                    //nazwa ciasteczka
                     'remember_me', 
+                    //token zapamiętany w DB remembered_logins
                     $user->remember_token, 
+                    //czas wygaśnięcia tokena w cookie
                     $user->expiry_timestamp,
-                    '/'
+                    '/' //dzieki temu ukośnikowi cookie 
+                        //jest dostępne w całej domenie
                 );
             }
         }
@@ -68,13 +74,20 @@ class Auth{
     }
 
     protected static function loginFromRememberCookie(){
-        //przypisuję wartość z cookie do zmiennej
+        //pobieram wartość tokena z cookie i przypisuję do zmiennej
         $cookie = $_COOKIE['remember_me'] ?? false;
 
         if($cookie){
+
+            echo 'cookie = ';
+            var_dump($cookie);
+
+            //sprawdzam czy jest taki token wśród zapamiętanych
             $remembered_login = RememberedLogin::findByToken($cookie);
 
             if($remembered_login){
+                //do zalogowania niezbędny jest obiekt user
+                //ktorego ID znalazłem dzięki DB remembered_login
                 $user = $remembered_login->getUser();
                 static::login($user, false);
                 return $user;
