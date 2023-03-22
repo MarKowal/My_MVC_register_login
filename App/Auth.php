@@ -48,6 +48,9 @@ class Auth{
             );
         }
         session_destroy();
+        //usuń ciasteczko z przeglądarki 
+        //oraz z DB remembered_logins:
+        static::forgetLogin();
     }
     /*
     public static function isLoggedIn(){
@@ -74,6 +77,7 @@ class Auth{
     }
 
     protected static function loginFromRememberCookie(){
+        //sprawdzam czy cookie istnieje
         //pobieram wartość tokena z cookie i przypisuję do zmiennej
         $cookie = $_COOKIE['remember_me'] ?? false;
 
@@ -88,12 +92,29 @@ class Auth{
                 static::login($user, false);
                 return $user;
             }
-
-
         }
-
     }
 
+    protected static function forgetLogin(){
+        $cookie = $_COOKIE['remember_me'] ?? false;
+
+        if($cookie){
+            $remembered_login = RememberedLogin::findByToken($cookie);
+
+            //usuwam cookie z DB remembered_logins
+            if($remembered_login){
+                $remembered_login->delete();
+            }
+
+            //żeby usunąc cookie z przeglądarki należy ustawić
+            //jego czas na przeszły
+            setcookie(
+                'remember_me',
+                '',
+                time()-3600
+            );
+        }
+    }
 }
 
 

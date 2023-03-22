@@ -36,4 +36,14 @@ class RememberedLogin extends \Core\Model{
         return strtotime($this->expires_at) < time();
     }
 
+    public function delete(){
+        //usuwam zapamiętane cookie z DB:
+        $sql = 'DELETE FROM remembered_logins WHERE token_hash = :token_hash';
+        
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam(':token_hash', $this->token_hash, PDO::PARAM_STR);
+    
+        $stmt->execute();
+    }
 }
