@@ -13,6 +13,8 @@ class Config{
     //false - do not show any error details on the screen, all is saved in logs/txt file
     //true - show all error details on the screen, nothing is saved in logs/txt file
 
+    //https://randomkeygen.com/ 
+    const SECRET_KEY = '.ZFQ:pN~c9vuXO0ak6hqpzT;Y=>&)G';
 }
 
 ?>

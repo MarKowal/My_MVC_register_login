@@ -4,6 +4,8 @@ namespace App\Controllers;
 
 use \Core\View;
 use \App\Auth;
+use \App\Token;
+
 
 class Home extends \Core\Controller{
 
@@ -23,7 +25,9 @@ class Home extends \Core\Controller{
             'user' => Auth::getUser()
         ]);
         */
+
         View::renderTemplate('Home/index.html');
+
     }
 }
 

@@ -20,6 +20,8 @@ class Login extends \Core\Controller{
         //var_dump($user);
 
         $user = User::authenticate($_POST['email'], $_POST['password']);
+        
+        $remember_me = isset($_POST['remember_me']);
 
         if($user){
 
@@ -29,7 +31,7 @@ class Login extends \Core\Controller{
             //sesja przyjmuje ID usera
             //$_SESSION['user_id'] = $user->id;
             
-            Auth::login($user);
+            Auth::login($user, $remember_me);
             //$this->redirect('/');
 
             Flash::addMessages('Login successful.');
@@ -43,6 +45,7 @@ class Login extends \Core\Controller{
             View::renderTemplate('Login/new.html', [
                 //podaję wpisany email do ponownego wyświeltenia w html w value="{{ email }}"
                 'email' => $_POST['email'],
+                'remember_me' => $remember_me
             ]);
         }
     }

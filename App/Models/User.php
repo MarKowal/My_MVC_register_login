@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use PDO;
+use \App\Token;
 
 class User extends \Core\Model{
 
@@ -132,6 +133,30 @@ class User extends \Core\Model{
         $stmt->execute();
 
         return $stmt->fetch();
+    }
+
+    public function rememberLogin(){
+        //tworzę nowy token ktory będzie w cookie
+        $token = new Token();
+        //hashuję token przed zapisaniem w DB
+        $hashed_token = $token->getHash();
+
+        //zapisuję w zmiennej czysty token, pójdzie do cookie
+        $this->remember_token = $token->getValue();
+        //ustawiam czas wygaśnięcia cookie np. 2 dni
+        $this->expiry_timestamp = time() + 60 * 60 * 24 * 2;
+
+        $sql = 'INSERT INTO remembered_logins (token_hash, user_id, expires_at) 
+                VALUES (:token_hash, :user_id, :expires_at)';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':token_hash', $hashed_token, PDO::PARAM_STR);
+        $stmt->bindValue(':user_id', $this->id, PDO::PARAM_INT);
+        $stmt->bindValue(':expires_at', date('Y-m-d H:i:s', $this->expiry_timestamp), PDO::PARAM_STR);
+
+        return $stmt->execute();
     }
 }
 
