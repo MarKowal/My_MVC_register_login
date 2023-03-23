@@ -15,6 +15,9 @@ class Config{
 
     //https://randomkeygen.com/ 
     const SECRET_KEY = '.ZFQ:pN~c9vuXO0ak6hqpzT;Y=>&)G';
+
+    const GMAIL_USERNAME = 'marcin.kowalski.programista@gmail.com';
+    const GMAIL_PASSWORD = 'zwllkyfryoozjtnw';
 }
 
 ?>
