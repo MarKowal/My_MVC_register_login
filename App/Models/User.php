@@ -144,7 +144,7 @@ class User extends \Core\Model{
         //zapisuję w zmiennej czysty token, pójdzie do cookie
         $this->remember_token = $token->getValue();
         //ustawiam czas wygaśnięcia cookie np. 2 dni
-        $this->expiry_timestamp = time() + 60 * 60 * 24 * 2;
+        $this->expiry_timestamp = time() + 60 * 60 * 24 * 30;
 
         $sql = 'INSERT INTO remembered_logins (token_hash, user_id, expires_at) 
                 VALUES (:token_hash, :user_id, :expires_at)';
@@ -164,9 +164,37 @@ class User extends \Core\Model{
         $user = static::findByEmail($email);
 
         if($user){
+            //generuję token i zapisuję do DB
+            if($user->startPasswordReset()){
 
-            
+            }
+
         }
+    }
+
+    protected function startPasswordReset(){
+        
+        //do resetu hasła generuję nowy token
+        $token = new Token();
+        $hashed_token = $token->getHash();
+
+        //czas trwania linku
+        $expiry_timestamp = time() + 60*60*2; //2 godziny
+
+        $sql = 'UPDATE users SET
+                password_reset_hash = :token_hash,
+                password_reset_expiry = :expires_at
+                WHERE id = :id';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':token_hash', $hashed_token, PDO::PARAM_STR);
+        $stmt->bindValue(':expires_at', date('Y-m-d H:i:s', $expiry_timestamp), PDO::PARAM_STR);
+        $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
+
+        return $stmt->execute();
+
     }
 }
 
