@@ -158,6 +158,16 @@ class User extends \Core\Model{
 
         return $stmt->execute();
     }
+
+    public static function sendPasswordReset($email){
+
+        $user = static::findByEmail($email);
+
+        if($user){
+
+            
+        }
+    }
 }
 
 
