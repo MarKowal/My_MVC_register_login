@@ -5,6 +5,7 @@ namespace App\Models;
 use PDO;
 use \App\Token;
 use \App\Mail;
+use Core\View;
 
 class User extends \Core\Model{
 
@@ -205,9 +206,12 @@ class User extends \Core\Model{
         //tworzę URL z tokenem
         $url = 'http://'.$_SERVER['HTTP_HOST'].'/password/reset/'.$this->password_reset_token;
 
-        $text = "Please click on the following URL to reset your password: $url";
-        $html = "Please click on the following URL to reset your password: <a href=\"$url\">LINK</a>";
+        //$text = "Please click on the following URL to reset your password: $url";
+        //$html = "Please click on the following URL to reset your password: <a href=\"$url\">LINK</a>";
        
+        $text = View::getTemplate('Password/reset_email.txt', ['url' => $url]);
+        $html = View::getTemplate('Password/reset_email.html', ['url' => $url]);
+
         //wysyłam maila:
         //adres email został wczesniej pobrany z DB
         Mail::send($this->email, 'Password reset', $text, $html);
