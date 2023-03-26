@@ -4,6 +4,7 @@ namespace App\Models;
 
 use PDO;
 use \App\Token;
+use \App\Mail;
 
 class User extends \Core\Model{
 
@@ -166,9 +167,8 @@ class User extends \Core\Model{
         if($user){
             //generuję token i zapisuję do DB
             if($user->startPasswordReset()){
-
+                $user->sendPasswordResetEmail();
             }
-
         }
     }
 
@@ -177,6 +177,9 @@ class User extends \Core\Model{
         //do resetu hasła generuję nowy token
         $token = new Token();
         $hashed_token = $token->getHash();
+        
+        //token będzie potrzebny do URL z resetem hasła 
+        $this->password_reset_token = $token->getValue();
 
         //czas trwania linku
         $expiry_timestamp = time() + 60*60*2; //2 godziny
@@ -195,6 +198,19 @@ class User extends \Core\Model{
 
         return $stmt->execute();
 
+    }
+
+    protected function sendPasswordResetEmail(){
+
+        //tworzę URL z tokenem
+        $url = 'http://'.$_SERVER['HTTP_HOST'].'/password/reset/'.$this->password_reset_token;
+
+        $text = "Please click on the following URL to reset your password: $url";
+        $html = "Please click on the following URL to reset your password: <a href=\"$url\">LINK</a>";
+       
+        //wysyłam maila:
+        //adres email został wczesniej pobrany z DB
+        Mail::send($this->email, 'Password reset', $text, $html);
     }
 }
 
