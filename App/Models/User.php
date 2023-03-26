@@ -214,7 +214,7 @@ class User extends \Core\Model{
 
         //wysyłam maila:
         //adres email został wczesniej pobrany z DB
-        Mail::send($this->email, 'Password reset', $text, $html);
+        Mail::send($this->email, 'Password reset 2', $text, $html);
     }
 }
 
