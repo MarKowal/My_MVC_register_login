@@ -18,7 +18,12 @@ class Password extends Controller{
 
     }
 
-
+    public function resetAction(){
+        //mam specjalnego routa ustawionego
+        //więc korzystam z tabeli route_params[]
+        $token = $this->route_params['token'];
+        echo $token;
+    }
 
 }
 
