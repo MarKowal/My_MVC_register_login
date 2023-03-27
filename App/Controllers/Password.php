@@ -19,10 +19,14 @@ class Password extends Controller{
     }
 
     public function resetAction(){
-        //mam specjalnego routa ustawionego
+        //mam specjalnego routa ustawionego w index.php
         //więc korzystam z tabeli route_params[]
         $token = $this->route_params['token'];
-        echo $token;
+        echo $token.'<br>';
+
+        $user = User::findByPasswordReset($token);
+
+        var_dump($user);
     }
 
 }
