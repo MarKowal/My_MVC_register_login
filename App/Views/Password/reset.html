@@ -78,7 +78,9 @@
     </ul>
     {% endif %}
 
-    <form method="post" id="formPassword">
+    <form method="post" id="formPassword" action="/password/resetPassword">
+        <!--w tym inpucie przechowuję token, który potem ląduje w tabeli $_POST['token']-->
+        <input type="hidden" name="token" value="{{ token }}">
 
         <div>
             <label for="inputPassword">Password</label>
