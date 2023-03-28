@@ -5,7 +5,8 @@
 {% block footer %}
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/hideshowpassword/2.2.0/hideShowPassword.min.js" integrity="sha512-feJ++Gf5tPybXI7qL3wIfavxoRCJIuI72gfd0Z2j5MYQIAnEfhzQMp3XHM6eAsXR6JrHULPCVPYFeH9AJiuPJg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    
+    <script src="/js/app.js"></script>
+
     <script>
         //umieszcza komentarz za buttonem Show/Hide
         $.validator.setDefaults({
@@ -17,20 +18,21 @@
         });
 
         //custom validation method need to be added:
-        $.validator.addMethod('validPassword',
-            function(value, element, param) {
-                if (value != '') {
-                    if (value.match(/.*[a-z]+.*/i) == null) {
-                        return false;
-                    }
-                    if (value.match(/.*\d+.*/) == null) {
-                        return false;
-                    }
-                }
-                return true;
-            },
-            'Must contain at least one letter and one number'
-        );
+    //wrzucone w oddzielny plik app.js:
+    //    $.validator.addMethod('validPassword',
+    //        function(value, element, param) {
+    //            if (value != '') {
+    //                if (value.match(/.*[a-z]+.*/i) == null) {
+    //                    return false;
+    //                }
+    //                if (value.match(/.*\d+.*/) == null) {
+    //                    return false;
+    //                 }
+    //            }
+    //            return true;
+    //        },
+    //        'Must contain at least one letter and one number'
+    //    );
         
         $(document).ready(function(){
             $('#formSignup').validate({
