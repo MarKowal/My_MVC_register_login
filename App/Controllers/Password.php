@@ -64,8 +64,16 @@ class Password extends Controller{
         */
 
         $user = $this->getUserOrExit($token);
-        echo "reset user's password here";
 
+        //wrzucam nowe hasło z resetu w walidację:
+        if($user->resetPassword($_POST['password'])){
+            echo 'password is valid';
+        } else {
+            View::renderTemplate('Password/reset.html', [
+                'token' => $token,
+                'user' => $user
+            ]);
+        }
     }
 
     protected function getUserOrExit($token){

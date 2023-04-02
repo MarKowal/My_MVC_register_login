@@ -53,7 +53,7 @@ class User extends \Core\Model{
             $this->errors[] = 'Invalid email.';
         }
 
-        if (static::emailExists($this->email)){
+        if (static::emailExists($this->email, $this->id ?? null)){
             $this->errors[] = 'Email already exists in the data base.';
         }
 
@@ -76,7 +76,7 @@ class User extends \Core\Model{
 
     //dla walidacji w Account w AJAX trzeba było ustawić public static:
     //protected function emailExists($email){
-    public static function emailExists($email){
+    public static function emailExists($email, $ignore_id = null){
         /*$sql = 'SELECT * FROM users WHERE email = :email';
 
         $db = static::getDB();
@@ -87,7 +87,18 @@ class User extends \Core\Model{
 
         return $stmt->fetch() !== false;*/
 
-        return static::findByEmail($email) !== false;
+        //return static::findByEmail($email) !== false;
+
+        $user = static::findByEmail($email);
+
+        if($user){
+            if($user->id != $ignore_id){
+                return true;
+            }
+
+            return false;
+        }
+
     }
     
     public static function findByEmail($email){
@@ -241,6 +252,16 @@ class User extends \Core\Model{
                 return $user;
             }            
         }
+
+    }
+
+    public function resetPassword($password){
+        //trzeba spr poprawność nowego hasła z resetu:
+        $this->password = $password;
+
+        $this->validate();
+       
+        return empty($this->errors);
 
     }
 }
