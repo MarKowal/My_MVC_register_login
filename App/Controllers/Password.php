@@ -22,8 +22,9 @@ class Password extends Controller{
         //mam specjalnego routa ustawionego w index.php
         //więc korzystam z tabeli route_params[]
         $token = $this->route_params['token'];
-        echo 'token = '.$token.'<br>';
-
+        //echo 'token = '.$token.'<br>';
+     
+        /*
         $user = User::findByPasswordReset($token);
 
         if($user){
@@ -35,12 +36,22 @@ class Password extends Controller{
         } else {
             echo 'password reset token invalid';
         }
+        */
+
+
+        $user = $this->getUserOrExit($token);
+        View::renderTemplate('Password/reset.html', [
+            //poprzez formularz przekażę schowany token do resetPasswordAction()
+            'token' => $token
+        ]);
+
     }
 
     public function resetPasswordAction(){
 
         $token = $_POST['token'];
 
+        /*
         $user = User::findByPasswordReset($token);
 
         if($user){
@@ -50,7 +61,23 @@ class Password extends Controller{
         } else {
             echo 'password reset token invalid';
         }
+        */
 
+        $user = $this->getUserOrExit($token);
+        echo "reset user's password here";
+
+    }
+
+    protected function getUserOrExit($token){
+        $user = User::findByPasswordReset($token);
+        if($user){
+           
+            return $user;
+
+        } else {
+            View::renderTemplate('Password/token_expired.html');
+            exit; 
+        }
     }
 }
 
