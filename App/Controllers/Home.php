@@ -5,6 +5,7 @@ namespace App\Controllers;
 use \Core\View;
 use \App\Auth;
 use \App\Token;
+use \App\Mail;
 
 
 class Home extends \Core\Controller{
@@ -27,9 +28,15 @@ class Home extends \Core\Controller{
         */
 
         View::renderTemplate('Home/index.html');
-
+        /*
+        Mail::send(
+            'mr_kowalski@interia.pl', 
+            'Test maila 3', 
+            'To jest wiadomość testowa', 
+            '<h1>To jest wiadomość testowa</h1><p>ą ę ł ś ć ż ź ń ó</p>'
+        );
+        */
     }
 }
-
 
 ?>

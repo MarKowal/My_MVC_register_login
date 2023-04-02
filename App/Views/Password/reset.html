@@ -1,12 +1,11 @@
 {% extends "base.html" %}
 
-{% block title %}Sign up{% endblock %}
+{% block title %}Reset password{% endblock %}
 
 {% block footer %}
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/hideshowpassword/2.2.0/hideShowPassword.min.js" integrity="sha512-feJ++Gf5tPybXI7qL3wIfavxoRCJIuI72gfd0Z2j5MYQIAnEfhzQMp3XHM6eAsXR6JrHULPCVPYFeH9AJiuPJg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="/js/app.js"></script>
-
     <script>
         //umieszcza komentarz za buttonem Show/Hide
         $.validator.setDefaults({
@@ -26,41 +25,26 @@
     //                    return false;
     //                }
     //                if (value.match(/.*\d+.*/) == null) {
-    //                    return false;
-    //                 }
+    //                   return false;
+    //                }
     //            }
     //            return true;
     //        },
     //        'Must contain at least one letter and one number'
     //    );
         
+        
         $(document).ready(function(){
-            $('#formSignup').validate({
+            $('#formPassword').validate({
                 //built-in validation rules from https://jqueryvalidation.org/documentation/
                 rules: {
-                    name: 'required',
-                    email: {
-                        required: true,
-                        email: true,
-                        //walidacja z użyciem AJAX z Account.php:
-                        remote: '/account/validate-email'
-                    },
                     password: {
                         required: true,
                         minlength: 6, 
                         //call my own method (from above)
                         validPassword: true
-                    }/*,
-                    password_confirm: {
-                        equalTo: '#inputPassword'
-                    }*/
-                },
-                //my custom message for email validation in AJAX:
-                messages: {
-                        email: {
-                            remote: 'email already taken'
-                        }
                     }
+                }
             });
 
             //show password button https://cdnjs.com/libraries/hideshowpassword 
@@ -82,7 +66,7 @@
 
 {% block body %}
     
-    <h1>Sign up</h1>
+    <h1>Reset password</h1>
 
     {% if user.errors is not empty %}
 
@@ -94,23 +78,17 @@
     </ul>
     {% endif %}
 
-    <form action="/signup/create" method="post" id="formSignup">
+    <form method="post" id="formPassword" action="/password/resetPassword">
+        <!--w tym inpucie przechowuję token, który potem ląduje w tabeli $_POST['token']-->
+        <input type="hidden" name="token" value="{{ token }}">
 
-        <div>
-            <label for="inputName">Name</label>
-            <input type="text" id="inputName" name="name" placeholder="Name" autofocus value="{{ user.name }}" required>
-        </div>
-        <div>
-            <label for="inputEmail">Email address</label>
-            <input type="email" id="inputEmail" name="email" placeholder="Email" value="{{ user.email }}" required>
-        </div>
         <div>
             <label for="inputPassword">Password</label>
             <input type="password" id="inputPassword" name="password" placeholder="Password" required>
         </div>  
         
 
-        <button type="submit">Sign up</button>
+        <button type="submit">Reset password</button>
 
     </form>
 
