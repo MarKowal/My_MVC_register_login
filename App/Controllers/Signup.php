@@ -23,6 +23,9 @@ class Signup extends \Core\Controller{
             //przeniesienie na stronę sukces, żeby drugi raz nie przesyłać danych z formularza
             //header('Location: http://'.$_SERVER['HTTP_HOST'].'/signup/success', true, 303);
             //exit;
+
+            $user->sendActivationEmail();
+
             $this->redirect('/signup/success');
         } else {
             //przesyłam spowrotem obiekt $user żeby wyświetlać error messages
@@ -36,4 +39,14 @@ class Signup extends \Core\Controller{
         View::renderTemplate('Signup/success.html');
     }
 
+    public function activateAction(){
+        //token z maila siedzi w tabeli route_params[]
+        User::activate($this->route_params['token']);
+        $this->redirect('/signup/activated');
+    }
+
+    public function activatedAction(){
+        View::renderTemplate('Signup/activated.html');
+
+    }
 }
