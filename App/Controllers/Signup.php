@@ -23,6 +23,9 @@ class Signup extends \Core\Controller{
             //przeniesienie na stronę sukces, żeby drugi raz nie przesyłać danych z formularza
             //header('Location: http://'.$_SERVER['HTTP_HOST'].'/signup/success', true, 303);
             //exit;
+
+            $user->sendActivationEmail();
+
             $this->redirect('/signup/success');
         } else {
             //przesyłam spowrotem obiekt $user żeby wyświetlać error messages

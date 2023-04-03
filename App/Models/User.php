@@ -30,6 +30,8 @@ class User extends \Core\Model{
             $token = new Token();
             $hashed_token = $token->getHash();
 
+            $this->activation_token = $token->getValue();
+
             $sql = 'INSERT INTO users (name, email, password_hash, activation_hash) 
                     VALUES (:name, :email, :password_hash, :activation_hash)';
 
@@ -286,6 +288,22 @@ class User extends \Core\Model{
 
         return false;
 
+    }
+
+    public function sendActivationEmail(){
+
+        //tworzę URL z tokenem
+        $url = 'http://'.$_SERVER['HTTP_HOST'].'/signup/activate/'.$this->activation_token;
+
+        //$text = "Please click on the following URL to reset your password: $url";
+        //$html = "Please click on the following URL to reset your password: <a href=\"$url\">LINK</a>";
+       
+        $text = View::getTemplate('Signup/activation_email.txt', ['url' => $url]);
+        $html = View::getTemplate('Signup/activation_email.html', ['url' => $url]);
+
+        //wysyłam maila:
+        //adres email został wczesniej pobrany z DB
+        Mail::send($this->email, 'Account activation', $text, $html);
     }
 }
 
