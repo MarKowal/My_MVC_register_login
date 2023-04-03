@@ -17,9 +17,10 @@ $router->add('{controller}/{action}');
 $router->add('{controller}/{id:\d+}/{action}');
 $router->add('login', ['controller' => 'login', 'action'=>'new']);
 $router->add('logout', ['controller' => 'login', 'action'=>'destroy']);
-//special route to reset the password:
-//with token as regex
+//special route to reset the password with token as regex:
 $router->add('password/reset/{token:[\da-f]+}', ['controller' => 'Password', 'action'=>'reset']);
+//special route to activate the user account with token as regex:
+$router->add('signup/activate/{token:[\da-f]+}', ['controller' => 'Signup', 'action'=>'activate']);
 
 
 

@@ -132,7 +132,7 @@ class User extends \Core\Model{
         $user = static::findByEmail($email);
         //jeżeli tak to
         //czy user z takim hasłem istnieje?
-        if($user){
+        if($user && $user->is_active){
             if (password_verify($password, $user->password_hash)){
                 return $user;
             }
@@ -304,6 +304,24 @@ class User extends \Core\Model{
         //wysyłam maila:
         //adres email został wczesniej pobrany z DB
         Mail::send($this->email, 'Account activation', $text, $html);
+    }
+
+    public static function activate($value){
+        //najpierw trzeba przerobić token na hash:
+        $token = new Token($value);
+        $hashed_token = $token->getHash();
+
+        $sql = 'UPDATE users SET
+                is_active = 1,
+                activation_hash = NULL
+                WHERE activation_hash = :hashed_token';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':hashed_token',  $hashed_token, PDO::PARAM_STR);
+
+        $stmt->execute();
     }
 }
 
