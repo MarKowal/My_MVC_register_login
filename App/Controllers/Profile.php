@@ -16,6 +16,11 @@ class Profile extends Authenticated{
         ]);
     }
 
+    public function editAction(){
+        View::renderTemplate('Profile/edit.html', [
+            'user' => Auth::getUser()
+        ]);
+    }
 
 }
 
