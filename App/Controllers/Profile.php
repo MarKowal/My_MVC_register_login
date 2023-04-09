@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use \Core\View;
 use \App\Auth;
+use \App\Flash;
 
 //class Profile extends \Core\Controller{
 //żeby user był już zalogowany to trzeba dziedziczyć po Athenticated
@@ -22,8 +23,22 @@ class Profile extends Authenticated{
         ]);
     }
 
-}
+    public function updateAction(){
+        //stawiam obiekt User żeby wykonywać jego metody
+        $user = Auth::getUser();
 
+        if($user->updateProfile($_POST)){
+            Flash::addMessages('Changes saved');
+            $this->redirect('/profile/show');
+            
+        } else {
+            View::renderTemplate('Profile/edit.html', [
+                'user' => $user
+            ]);
+        }
+    }
+
+}
 
 
 ?>
