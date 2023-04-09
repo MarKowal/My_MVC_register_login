@@ -5,6 +5,12 @@
 {% block body %}
     
 <h1>Profile details</h1>
-    
+    <!--HTML description list-->
+    <dl>
+        <dt>Name</dt>
+        <dd>{{ user.name }}</dd>
+        <dt>Email</dt>
+        <dd>{{ user.email }}</dd>
+    </dl>
 
 {% endblock %}
