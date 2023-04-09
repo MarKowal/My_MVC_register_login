@@ -18,6 +18,9 @@
         });
       
         $(document).ready(function(){
+
+            var userID = '{{ user.id }}';
+
             $('#formProfile').validate({
                 //built-in validation rules from https://jqueryvalidation.org/documentation/
                 rules: {
@@ -26,7 +29,15 @@
                         required: true,
                         email: true,
                         //walidacja z użyciem AJAX z Account.php:
-                        remote: '/account/validate-email'
+                        //remote: '/account/validate-email'
+                        remote: {
+                            url: '/account/validate-email',
+                            data: {
+                                ignore_id: function(){
+                                    return userID;
+                                }
+                            }
+                        }
                     },
                     password: {
                         required: true,
