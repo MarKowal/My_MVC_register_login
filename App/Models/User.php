@@ -66,17 +66,18 @@ class User extends \Core\Model{
         /*if ($this->password != $this->password_confirm){
             $this->errors[] = 'Password must match confirmation.';
         }*/
+        if(isset($this->password)){
+            if (strlen($this->password) < 6){
+                $this->errors[] = 'Password must have at least 6 characters.';
+            }        
 
-        if (strlen($this->password) < 6){
-            $this->errors[] = 'Password must have at least 6 characters.';
-        }        
+            if (preg_match('/.*[a-z]+.*/i', $this->password) == 0){
+                $this->errors[] = 'Password needs at least one letter.';
+            }
 
-        if (preg_match('/.*[a-z]+.*/i', $this->password) == 0){
-            $this->errors[] = 'Password needs at least one letter.';
-        }
-
-        if (preg_match('/.*\d+.*/i', $this->password) == 0){
-            $this->errors[] = 'Password needs at least one number.';
+            if (preg_match('/.*\d+.*/i', $this->password) == 0){
+                $this->errors[] = 'Password needs at least one number.';
+            }
         }
     }
 
@@ -322,6 +323,43 @@ class User extends \Core\Model{
         $stmt->bindValue(':hashed_token',  $hashed_token, PDO::PARAM_STR);
 
         $stmt->execute();
+    }
+
+    public function updateProfile($data){
+        $this->name = $data['name'];
+        $this->email = $data['email'];
+        //jeżeli w ogóle zmieniam hasło:
+        if($data['password'] != ''){
+            $this->password = $data['password'];
+        }
+
+        $this->validate();
+
+        if (empty($this->errors)){
+            $sql = 'UPDATE users SET
+                name = :name,
+                email = :email';
+                //kombinowanie bo password jest opcjonalne:
+                if(isset($this->password)){
+                    $sql .= ', password_hash = :password_hash';
+                }  
+            $sql .= "\nWHERE id = :id";
+
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+
+            $stmt->bindValue(':name',  $this->name, PDO::PARAM_STR);
+            $stmt->bindValue(':email',  $this->email, PDO::PARAM_STR);
+            $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
+            if(isset($this->password)){
+                $password_hash = password_hash($this->password, PASSWORD_DEFAULT);
+                $stmt->bindValue(':password_hash', $password_hash, PDO::PARAM_STR);
+            }
+
+            return $stmt->execute();
+        }
+
+        return false;
     }
 }
 
